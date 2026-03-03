@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mixelmina ✿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:    #c0474a;
+      --maroon:  #7b1f2a;
+      --blush:   #f5dde0;
+      --cream:   #fdf6f0;
+      --soft:    #f9eced;
+      --text:    #3a1a1d;
+      --muted:   #9a6e72;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--text);
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%23c0474a' opacity='0.6'/%3E%3C/svg%3E") 10 10, auto;
+    }
+
+    /* ── floating petals bg ── */
+    .petals {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0%   { opacity: 0; transform: translateY(-20px) rotate(0deg); }
+      10%  { opacity: 0.55; }
+      90%  { opacity: 0.35; }
+      100% { opacity: 0; transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* ── nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 40px;
+      background: rgba(253,246,240,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(192,71,74,0.12);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--rose);
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+
+    /* ── hero ── */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 10% 60px;
+      gap: 60px;
+    }
+    .hero-text { flex: 1; }
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1.1;
+      color: var(--maroon);
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--rose);
+    }
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 400px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+    }
+    .hero-tags {
+      margin-top: 28px;
+      display: flex; flex-wrap: wrap; gap: 10px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+    }
+    .tag {
+      background: var(--blush);
+      color: var(--rose);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(192,71,74,0.2);
+    }
+
+    /* hero photo */
+    .hero-photo-wrap {
+      flex: 0 0 340px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+    .hero-photo-frame {
+      position: relative;
+      width: 300px; height: 360px;
+      margin: 0 auto;
+    }
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -10px -10px 10px 10px;
+      border: 2px solid rgba(192,71,74,0.25);
+      border-radius: 180px 180px 160px 160px;
+      z-index: 0;
+    }
+    .hero-photo-frame img {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 180px 180px 160px 160px;
+      display: block;
+    }
+    .hero-deco {
+      position: absolute;
+      font-size: 1.8rem;
+      animation: bob 3s ease-in-out infinite;
+    }
+    .hero-deco.cat  { top: -18px; right: -10px; animation-delay: 0s; }
+    .hero-deco.star { bottom: 10px; left: -16px; animation-delay: 1s; }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    /* ── divider ── */
+    .divider {
+      text-align: center;
+      padding: 10px 0;
+      color: var(--rose);
+      font-size: 1.1rem;
+      letter-spacing: 12px;
+      opacity: 0.4;
+    }
+
+    /* ── about / interests ── */
+    .section { position: relative; z-index: 1; padding: 70px 10%; }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--maroon);
+      margin-bottom: 30px;
+    }
+
+    .interests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .interest-card {
+      background: white;
+      border: 1px solid rgba(192,71,74,0.12);
+      border-radius: 16px;
+      padding: 22px 16px;
+      text-align: center;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .interest-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(192,71,74,0.12);
+    }
+    .interest-card .icon { font-size: 2rem; margin-bottom: 10px; }
+    .interest-card .label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── gallery ── */
+    .gallery-section { position: relative; z-index: 1; padding: 60px 10%; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 14px;
+    }
+    .gallery-item {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(123,31,42,0.45), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex; align-items: flex-end; padding: 16px;
+      color: white; font-size: 0.85rem; font-weight: 500;
+    }
+    .gallery-item:hover .overlay { opacity: 1; }
+
+    /* ── us section ── */
+    .us-section {
+      position: relative; z-index: 1;
+      padding: 70px 10%;
+      background: var(--soft);
+      margin: 0;
+    }
+    .us-inner {
+      display: flex; gap: 60px; align-items: center;
+    }
+    .us-photo {
+      flex: 0 0 300px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid white;
+      box-shadow: 0 16px 40px rgba(123,31,42,0.15);
+    }
+    .us-photo img { width: 100%; display: block; }
+    .us-text { flex: 1; }
+    .us-text p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .us-text .heart-line {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--rose);
+    }
+
+    /* ── footer ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(192,71,74,0.1);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer span { color: var(--rose); }
+
+    /* ── animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- floating petals -->
+  <div class="petals" id="petals"></div>
+
+  <!-- nav -->
+  <nav>
+    <div class="nav-logo">Mixel ✿</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#interests">Interests</a>
+      <a href="#us">Us 🤍</a>
+    </div>
+  </nav>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">✦ my favorite person ✦</p>
+      <h1 class="hero-name">
+        Mixelmina<br/><em>Melhen Azzakah</em>
+      </h1>
+      <p class="hero-sub">
+        Seorang yang suka kucing, hal-hal lucu, dan dunia yang penuh imajinasi.
+        Dari Ghibli sampai Genshin — selalu ada dunia baru untuk dijelajahi. 🌸
+      </p>
+      <div class="hero-tags">
+        <span class="tag">🐱 Cat Lover</span>
+        <span class="tag">🎮 Genshin Impact</span>
+        <span class="tag">🌿 Studio Ghibli</span>
+        <span class="tag">🍓 Cute Things</span>
+        <span class="tag">❤️ Maroon</span>
+      </div>
+    </div>
+
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-frame">
+        <img src="images/mixel.jpg" alt="Mixelmina"/>
+        <div class="hero-deco cat">🐾</div>
+        <div class="hero-deco star">✦</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">✦ ✿ ✦ ✿ ✦</div>
+
+  <!-- about / interests -->
+  <section class="section" id="about">
+    <p class="section-label">✦ hal-hal yang dia suka</p>
+    <h2 class="section-title" id="interests">Interests & Vibes</h2>
+    <div class="interests-grid">
+      <div class="interest-card">
+        <div class="icon">🐱</div>
+        <div class="label">Kucing</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🌿</div>
+        <div class="label">Studio Ghibli</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🎮</div>
+        <div class="label">Genshin Impact</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🍓</div>
+        <div class="label">Cute Stuff</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🌸</div>
+        <div class="label">Pastel Vibes</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🎨</div>
+        <div class="label">Hal Lucu</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">❤️</div>
+        <div class="label">Maroon</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">✨</div>
+        <div class="label">Aesthetic</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🍣</div>
+        <div class="label">Sushi</div>
+      </div>
+      <div class="interest-card">
+        <div class="icon">🍵</div>
+        <div class="label">Matcha</div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">✦ ✿ ✦ ✿ ✦</div>
+
+  <!-- us -->
+  <section class="us-section" id="us">
+    <div class="us-inner">
+      <div class="us-photo">
+        <img src="images/fotbar.jpg" alt="Foto Bareng"/>
+      </div>
+      <div class="us-text">
+        <p class="section-label">✦ us</p>
+        <h2 class="section-title" style="margin-bottom:16px;">Kita 🤍</h2>
+        <p>
+          Terima kasih sudah jadi orang yang paling spesial.
+          Terima kasih untuk semua hal sudah kamu bagi, untuk semua tawa, dan untuk semua momen yang sudah kita lewati bareng. 🌟
+          Mungkin kalau gada kamu aku gatau deh apa itu sushi, ramen dan banyak hal lagi
+          Setiap momen yang dilalui bareng kamu selalu jadi yang paling berkesan. 🌸
+        </p>
+        <p>
+          Dari ngobrol soal kucing sampai mencoba hal baru —
+          rasanya semua lebih menyenangkan kalau sama kamu. 💕
+        </p>
+        <p class="heart-line">"Kamu salah satu ketidaksengajaan yang selalu aku syukuri." ✦</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <p>Made with <span>♥</span> for Mixelmina Melhen Azzakah</p>
+    <p style="margin-top:6px; font-size:0.75rem; opacity:0.6;">✦ always & forever ✦</p>
+  </footer>
+
+  <script>
+    // floating petals / stars
+    const symbols = ['🌸', '✦', '✿', '🍂', '·', '✦', '🌸', '✿'];
+    const container = document.getElementById('petals');
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement('span');
+      el.className = 'petal';
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (0.7 + Math.random() * 0.8) + 'rem';
+      el.style.animationDuration = (8 + Math.random() * 14) + 's';
+      el.style.animationDelay = (Math.random() * 12) + 's';
+      container.appendChild(el);
+    }
+
+    // fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.interest-card, .us-inner, .section-title').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
