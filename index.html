@@ -508,7 +508,102 @@
     playing = !playing;
   }
 </script>
+  <!-- Kucing jalan-jalan -->
+<canvas id="cat-canvas" style="position:fixed; bottom:0; left:0; width:100%; height:80px; pointer-events:none; z-index:998;"></canvas>
+
+<script>
+  const canvas = document.getElementById('cat-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = 80;
+
+  const frames = {
+    walk: [
+      // frame 1
+      (ctx, x) => {
+        ctx.fillStyle = '#c0474a';
+        // badan
+        ctx.beginPath(); ctx.ellipse(x+16, 52, 14, 10, 0, 0, Math.PI*2); ctx.fill();
+        // kepala
+        ctx.beginPath(); ctx.ellipse(x+28, 44, 9, 8, 0.3, 0, Math.PI*2); ctx.fill();
+        // telinga
+        ctx.beginPath(); ctx.moveTo(x+24, 38); ctx.lineTo(x+21, 30); ctx.lineTo(x+28, 36); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x+30, 37); ctx.lineTo(x+34, 30); ctx.lineTo(x+36, 37); ctx.fill();
+        // ekor
+        ctx.beginPath(); ctx.moveTo(x+2, 50); ctx.quadraticCurveTo(x-8, 38, x-2, 30);
+        ctx.lineWidth=3; ctx.strokeStyle='#c0474a'; ctx.stroke();
+        // kaki (frame 1)
+        ctx.fillStyle = '#c0474a';
+        ctx.fillRect(x+8,  60, 4, 10);
+        ctx.fillRect(x+16, 58, 4, 12);
+        ctx.fillRect(x+22, 60, 4, 10);
+        ctx.fillRect(x+30, 58, 4, 12);
+        // mata
+        ctx.fillStyle = 'white';
+        ctx.beginPath(); ctx.arc(x+30, 43, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#1a1a1a';
+        ctx.beginPath(); ctx.arc(x+30, 43, 1.2, 0, Math.PI*2); ctx.fill();
+      },
+      // frame 2
+      (ctx, x) => {
+        ctx.fillStyle = '#c0474a';
+        ctx.beginPath(); ctx.ellipse(x+16, 52, 14, 10, 0, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(x+28, 44, 9, 8, 0.3, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x+24, 38); ctx.lineTo(x+21, 30); ctx.lineTo(x+28, 36); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x+30, 37); ctx.lineTo(x+34, 30); ctx.lineTo(x+36, 37); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x+2, 50); ctx.quadraticCurveTo(x-8, 38, x-2, 30);
+        ctx.lineWidth=3; ctx.strokeStyle='#c0474a'; ctx.stroke();
+        // kaki (frame 2 - bergeser)
+        ctx.fillStyle = '#c0474a';
+        ctx.fillRect(x+8,  58, 4, 12);
+        ctx.fillRect(x+16, 60, 4, 10);
+        ctx.fillRect(x+22, 58, 4, 12);
+        ctx.fillRect(x+30, 60, 4, 10);
+        ctx.fillStyle = 'white';
+        ctx.beginPath(); ctx.arc(x+30, 43, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#1a1a1a';
+        ctx.beginPath(); ctx.arc(x+30, 43, 1.2, 0, Math.PI*2); ctx.fill();
+      }
+    ]
+  };
+
+  let catX = -60;
+  let frame = 0;
+  let tick = 0;
+  let dir = 1; // 1 = kanan, -1 = kiri
+
+  function drawCat() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    if (dir === -1) {
+      // balik arah (mirror)
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+      frames.walk[frame](ctx, canvas.width - catX - 40);
+    } else {
+      frames.walk[frame](ctx, catX);
+    }
+    ctx.restore();
+
+    // ganti frame tiap 8 tick
+    tick++;
+    if (tick % 8 === 0) frame = frame === 0 ? 1 : 0;
+
+    // gerak
+    catX += 1.2 * dir;
+
+    // kalau sampai ujung, balik arah
+    if (catX > canvas.width + 60) { dir = -1; catX = canvas.width + 60; }
+    if (catX < -60) { dir = 1; catX = -60; }
+
+    requestAnimationFrame(drawCat);
+  }
+
+  window.addEventListener('resize', () => { canvas.width = window.innerWidth; });
+  drawCat();
+</script>
 </body>
 </html>
+
 
 
