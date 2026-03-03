@@ -405,8 +405,10 @@
         <p>
           Terima kasih sudah jadi orang yang paling spesial.
           Terima kasih untuk semua hal sudah kamu bagi, untuk semua tawa, dan untuk semua momen yang sudah kita lewati bareng. 🌟
-          Mungkin kalau gada kamu aku gatau deh apa itu sushi, ramen dan banyak hal lagi. Ketawamu, jokes receh, dan banyak lagi yang gabisa aku sebutin satu satu
+          Mungkin kalau gada kamu aku gatau deh apa itu sushi, ramen dan banyak hal lagi. Ketawamu, jokes receh, dan banyak lagi yang gabisa aku sebutin satu satu.
           Pada intinya, thank you for into in my life. I know i'm not enough for you but I'll always do the best for you and us.
+          Ajak aku kemanapun kamu mau, bawa aku di setiap langkahmu, dan semoga selalu ada aku di setiap mimpi-mimpi besarmu.
+          Aku adalah orang yang akan selalu bahagia atas semua kebahagiaan kamu. Aku adalah penggemar kamu.
           Setiap momen yang dilalui bareng kamu selalu jadi yang paling berkesan. 🌸
         </p>
         <p>
@@ -457,5 +459,55 @@
     });
   </script>
 </body>
+<!-- YouTube background music -->
+<div id="yt-player" style="position:fixed; bottom:20px; right:20px; z-index:999;">
+  <iframe id="yt-iframe"
+    width="0" height="0"
+    src="https://www.youtube.com/embed/6TBhFfda0dM?autoplay=1&loop=1&playlist=6TBhFfda0dM&controls=0&mute=0"
+    allow="autoplay"
+    style="display:none;">
+  </iframe>
+  <button id="music-btn" onclick="toggleMusic()" title="Music"
+    style="
+      background: rgba(255,255,255,0.85);
+      border: 1.5px solid rgba(192,71,74,0.25);
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: 'DM Sans', sans-serif;
+      color: #7b1f2a;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(192,71,74,0.15);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    ">
+    🎵 <span id="music-label">Playing</span>
+  </button>
+</div>
 
+<script>
+  var muted = false;
+  var iframe = document.getElementById('yt-iframe');
+
+  document.addEventListener('click', function startMusic() {
+    iframe.style.display = 'block';
+    document.removeEventListener('click', startMusic);
+  }, { once: true });
+
+  function toggleMusic() {
+    muted = !muted;
+    var src = iframe.src;
+    if (muted) {
+      iframe.src = src.replace('mute=0', 'mute=1');
+      document.getElementById('music-label').textContent = 'Muted';
+    } else {
+      iframe.src = src.replace('mute=1', 'mute=0');
+      document.getElementById('music-label').textContent = 'Playing';
+    }
+  }
+</script>
 </html>
+
