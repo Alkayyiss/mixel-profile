@@ -458,16 +458,13 @@
       observer.observe(el);
     });
   </script>
-</body>
-<!-- YouTube background music -->
-<div id="yt-player" style="position:fixed; bottom:20px; right:20px; z-index:999;">
-  <iframe id="yt-iframe"
-    width="0" height="0"
-    src="https://www.youtube.com/embed/6TBhFfda0dM?autoplay=1&loop=1&playlist=6TBhFfda0dM&controls=0&mute=0"
-    allow="autoplay"
-    style="display:none;">
-  </iframe>
-  <button id="music-btn" onclick="toggleMusic()" title="Music"
+  <!-- Background music -->
+<audio id="bg-music" loop>
+  <source src="music.mp3" type="audio/mpeg"/>
+</audio>
+
+<div style="position:fixed; bottom:20px; right:20px; z-index:999;">
+  <button onclick="toggleMusic()" 
     style="
       background: rgba(255,255,255,0.85);
       border: 1.5px solid rgba(192,71,74,0.25);
@@ -489,25 +486,29 @@
 </div>
 
 <script>
-  var muted = false;
-  var iframe = document.getElementById('yt-iframe');
+  var music = document.getElementById('bg-music');
+  var playing = false;
 
+  // mulai musik setelah klik pertama
   document.addEventListener('click', function startMusic() {
-    iframe.style.display = 'block';
+    music.volume = 0.4;
+    music.play();
+    playing = true;
     document.removeEventListener('click', startMusic);
   }, { once: true });
 
   function toggleMusic() {
-    muted = !muted;
-    var src = iframe.src;
-    if (muted) {
-      iframe.src = src.replace('mute=0', 'mute=1');
+    if (playing) {
+      music.pause();
       document.getElementById('music-label').textContent = 'Muted';
     } else {
-      iframe.src = src.replace('mute=1', 'mute=0');
+      music.play();
       document.getElementById('music-label').textContent = 'Playing';
     }
+    playing = !playing;
   }
 </script>
+</body>
 </html>
+
 
